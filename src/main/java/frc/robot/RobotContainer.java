@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -38,8 +37,8 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> .8*(Math.pow(-driver.getRawAxis(translationAxis),3))+ (1 - .8)* -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
+                () -> .75*(Math.pow(-driver.getRawAxis(translationAxis),3))+ (1 - .75)* -driver.getRawAxis(translationAxis), 
+                () -> .75*(Math.pow(-driver.getRawAxis(strafeAxis),3))+ (1 - .75)* -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
