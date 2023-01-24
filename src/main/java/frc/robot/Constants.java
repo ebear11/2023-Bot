@@ -82,7 +82,7 @@ public final class Constants {
         /** Meters per Second */
         public static final double maxSpeed = 5.49; 
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 8.38;
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
