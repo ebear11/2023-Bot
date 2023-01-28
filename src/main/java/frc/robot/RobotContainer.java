@@ -28,10 +28,11 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-
+    private final JoystickButton PID = new JoystickButton(driver, XboxController.Button.kX.value);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
 
+    private Command PIDRamp = new frc.robot.commands.PIDRamp(s_Swerve).repeatedly();
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -57,6 +58,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        PID.whileTrue(PIDRamp);
     }
 
     /**
