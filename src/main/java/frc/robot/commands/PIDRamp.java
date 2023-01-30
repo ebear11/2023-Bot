@@ -12,21 +12,29 @@ public class PIDRamp extends CommandBase {
     private PIDController pidController;
     public PIDRamp(Swerve s_Swerve) {
         this.s_Swerve = s_Swerve;
-        this.pidController = new PIDController(.1,0,.5);
-        pidController.setTolerance(1);
+        this.pidController = new PIDController(.5,0,.5);
+        pidController.setTolerance(3.0);
+        pidController.setSetpoint(0.0);
     }
 
     @Override
     public void execute() {
         /* Get Values, Deadband*/
-        double translationVal = pidController.calculate(s_Swerve.gyro.getPitch(), 0);
-
+        double translationVal = pidController.calculate(s_Swerve.gyro.getRoll(), 0);
+        System.out.println("Error: " + pidController.getPositionError());
+        System.out.println("Roll: " + s_Swerve.gyro.getRoll());
+        System.out.println("motor output: " + translationVal);
+        System.out.println("Tolerance " + pidController.getPositionTolerance());
         /* Drive */
-        s_Swerve.drive(
+        boolean atSet = pidController.atSetpoint();
+        if (!atSet){
+            s_Swerve.drive(
             new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 
             0, 
             false, 
             true
         );
+        }
+        
     }
 }
