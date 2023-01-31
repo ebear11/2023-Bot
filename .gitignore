@@ -162,5 +162,5 @@ bin/
 *-window.json
 
 # key filed
-.txt
-.pub
+*.txt
+*.pub
