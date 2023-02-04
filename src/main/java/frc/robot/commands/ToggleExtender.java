@@ -13,6 +13,6 @@ public class ToggleExtender extends CommandBase {
 
     @Override
     public void execute() {
-    armSubsystem.extend();       
+    armSubsystem.toggleExtender();       
     }
 }

@@ -13,6 +13,6 @@ public class ToggleClamper extends CommandBase {
 
     @Override
     public void execute() {
-    armSubsystem.clamp();       
+    armSubsystem.toggleClamper();       
     }
 }
