@@ -7,14 +7,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.Auto;
-import frc.robot.commands.ArmDown;
-import frc.robot.commands.ArmUp;
-import frc.robot.commands.Clamp;
-import frc.robot.commands.Extend;
-import frc.robot.commands.FlipDown;
-import frc.robot.commands.FlipUp;
-import frc.robot.commands.Release;
-import frc.robot.commands.Retract;
+import frc.robot.commands.ToggleArm;
+import frc.robot.commands.ToggleClamper;
+import frc.robot.commands.ToggleExtender;
+import frc.robot.commands.ToggleFlipper;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmSubsystem;
@@ -43,14 +39,10 @@ public class RobotContainer {
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private Command PIDRamp = new frc.robot.commands.PIDRamp(s_Swerve).repeatedly();
-    private Command armUp = new ArmUp(armSubsystem).repeatedly();
-    private Command armDown = new ArmDown(armSubsystem).repeatedly();
-    private Command extend = new Extend(armSubsystem);
-    private Command retract = new Retract(armSubsystem);
-    private Command flipUp = new FlipUp(armSubsystem);
-    private Command flipDown = new FlipDown(armSubsystem);
-    private Command clamp = new Clamp(armSubsystem);
-    private Command release = new Release(armSubsystem);
+    private Command armUp = new ToggleArm(armSubsystem).repeatedly();
+    private Command extend = new ToggleExtender(armSubsystem);
+    private Command flipUp = new ToggleFlipper(armSubsystem);
+    private Command clamp = new ToggleClamper(armSubsystem);
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
