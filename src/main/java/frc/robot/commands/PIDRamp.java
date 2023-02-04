@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,11 +24,12 @@ public class PIDRamp extends CommandBase {
         System.out.println("Roll: " + s_Swerve.gyro.getRoll());
         System.out.println("motor output: " + translationVal);
         System.out.println("Tolerance " + pidController.getPositionTolerance());
+        translationVal /= 3.5;
         /* Drive */
         boolean atSet = pidController.atSetpoint();
         if (!atSet){
             s_Swerve.drive(
-            new Translation2d(translationVal, 0).times(Constants.Swerve.maxSpeed), 
+            new Translation2d(translationVal, 0), 
             0, 
             false, 
             true
