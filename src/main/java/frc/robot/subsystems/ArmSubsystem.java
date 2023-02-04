@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase{
@@ -16,31 +15,22 @@ public class ArmSubsystem extends SubsystemBase{
     DoubleSolenoid extender = new DoubleSolenoid(60,PneumaticsModuleType.REVPH, 0, 1);
     DoubleSolenoid flipper = new DoubleSolenoid(60, PneumaticsModuleType.REVPH,2,3);
     DoubleSolenoid clamper = new DoubleSolenoid(60, PneumaticsModuleType.REVPH, 4, 5);
-    public void armUp(double setPoint){
+    public void moveArm(double setPoint, double controllerInput){
         if(encoder.getAbsolutePosition() >= setPoint){
-            armMotor.set(ControlMode.PercentOutput, 1);
+            armMotor.set(ControlMode.PercentOutput, controllerInput);
         }
     }
-    public void armDown(){
-        armMotor.set(ControlMode.PercentOutput, -1);
+    
+    public void toggleExtender(){
+        extender.toggle();;
     }
-    public void retract(){
-        extender.set((Value.kReverse));
+    
+    public void toggleFlipper(){
+        flipper.toggle();
     }
-    public void extend(){
-        extender.set(Value.kForward);
-    }
-    public void flipDown(){
-        flipper.set(Value.kReverse);
-    }
-    public void flipUp(){
-        flipper.set(Value.kForward);
-    }
-    public void release(){
-        clamper.set(Value.kReverse);
-    }
-    public void clamp(){
-        clamper.set(Value.kForward);
+    
+    public void toggleClamper(){
+        clamper.toggle();
     }
 
 }

@@ -13,6 +13,6 @@ public class ToggleFlipper extends CommandBase {
 
     @Override
     public void execute() {
-    armSubsystem.flipUp();       
+    armSubsystem.toggleFlipper();       
     }
 }
