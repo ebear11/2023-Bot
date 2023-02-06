@@ -15,9 +15,9 @@ public class ArmSubsystem extends SubsystemBase{
     DoubleSolenoid extender = new DoubleSolenoid(60,PneumaticsModuleType.REVPH, 0, 1);
     DoubleSolenoid flipper = new DoubleSolenoid(60, PneumaticsModuleType.REVPH,2,3);
     DoubleSolenoid clamper = new DoubleSolenoid(60, PneumaticsModuleType.REVPH, 4, 5);
-    public void moveArm(double setPoint, double controllerInput){
+    public void moveArm(double setPoint, double input){
         if(encoder.getAbsolutePosition() >= setPoint){
-            armMotor.set(ControlMode.PercentOutput, controllerInput);
+            armMotor.set(ControlMode.PercentOutput, input);
         }
     }
     

@@ -11,7 +11,7 @@ public class PIDRamp extends CommandBase {
     private PIDController pidController;
     public PIDRamp(Swerve s_Swerve) {
         this.s_Swerve = s_Swerve;
-        this.pidController = new PIDController(.5,0,.5);
+        this.pidController = new PIDController(.2,0,.5);
         pidController.setTolerance(3.0);
         pidController.setSetpoint(0.0);
     }
@@ -24,7 +24,7 @@ public class PIDRamp extends CommandBase {
         System.out.println("Roll: " + s_Swerve.gyro.getRoll());
         System.out.println("motor output: " + translationVal);
         System.out.println("Tolerance " + pidController.getPositionTolerance());
-        translationVal /= 3.5;
+        translationVal /= 4.5;
         /* Drive */
         boolean atSet = pidController.atSetpoint();
         if (!atSet){
