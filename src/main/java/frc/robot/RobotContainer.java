@@ -7,13 +7,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.lib.math.DriveCurve;
 import frc.robot.autos.Auto;
-import frc.robot.commands.ArmDown;
 import frc.robot.commands.PIDRamp;
-import frc.robot.commands.ArmUp;
-import frc.robot.commands.ToggleClamper;
-import frc.robot.commands.ToggleExtender;
-import frc.robot.commands.ToggleFlipper;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmSubsystem;
@@ -43,25 +39,31 @@ public class RobotContainer {
     private final JoystickButton tiltToggle = new JoystickButton(operator, 5);
     private final JoystickButton clampToggle = new JoystickButton(operator, 2);
     private final JoystickButton extendToggle = new JoystickButton(operator, 3);
+    private final JoystickButton pull = new JoystickButton(operator, 6);
+    private final JoystickButton push = new JoystickButton(operator, 4);
 
     
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private Command PIDRamp = new PIDRamp(s_Swerve).repeatedly();
-    private Command ArmDown = new ArmDown(armSubsystem);
-    private Command ArmUp = new ArmUp(armSubsystem);
-    private Command extend = new ToggleExtender(armSubsystem);
-    private Command flip = new ToggleFlipper(armSubsystem);
-    private Command clamp = new ToggleClamper(armSubsystem);
-    
+    private InstantCommand armDown = new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, -1));
+    private InstantCommand armUp = new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 1));
+    private InstantCommand armStop = new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 0));
+    private InstantCommand extend = new InstantCommand(() -> armSubsystem.toggleClamper());
+    private InstantCommand flip = new InstantCommand(() -> armSubsystem.toggleFlipper());
+    private InstantCommand clamp = new InstantCommand(() -> armSubsystem.toggleClamper());
+    private InstantCommand pullIn = new InstantCommand(() -> armSubsystem.setPuller(1));
+    private InstantCommand pushOut = new InstantCommand(() -> armSubsystem.setPuller(-1));
+    private InstantCommand stopPuller = new InstantCommand(() -> armSubsystem.setPuller(0));
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> .75*(Math.pow(-driver.getRawAxis(translationAxis),3))+ (1 - .75)* -driver.getRawAxis(translationAxis), 
-                () -> .75*(Math.pow(-driver.getRawAxis(strafeAxis),3))+ (1 - .75)* -driver.getRawAxis(strafeAxis), 
+                () -> DriveCurve.applyDriveCurve(translationAxis), 
+                () -> DriveCurve.applyDriveCurve(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
@@ -81,8 +83,18 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         PID.whileTrue(PIDRamp);
-        liftUp.onTrue(ArmUp);
-        liftDown.onTrue(ArmDown);
+        liftUp
+            .onTrue(armUp)
+            .onFalse(armStop);
+        liftDown
+            .onTrue(armDown)
+            .onFalse(armStop);
+        pull
+            .onTrue(pullIn)
+            .onFalse(pushOut);
+        push
+            .onTrue(pushOut)
+            .onFalse(stopPuller);
         extendToggle.onTrue(extend);
         clampToggle.onTrue(clamp);
         tiltToggle.onTrue(flip);

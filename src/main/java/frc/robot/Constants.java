@@ -13,6 +13,7 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.05;
     public static final double armSetpoint = 120.0;
+    public static final double driveCurveConstant = .75;
     public static final class Swerve {
         public static final int pigeonID = 30;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
@@ -24,7 +25,7 @@ public final class Constants {
         public static final double trackWidth = Units.inchesToMeters(23.6); 
         public static final double wheelBase = Units.inchesToMeters(23.6); 
         public static final double wheelCircumference = chosenModule.wheelCircumference;
-
+        
         /* Swerve Kinematics 
          * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
          public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
@@ -87,7 +88,8 @@ public final class Constants {
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
         public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
-
+        // program constants
+        public static final double armSetpoint = 1000;
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         public static final class Mod0 { 
