@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
 import frc.robot.autos.Auto;
+import frc.robot.commands.MoveToSetpoint;
 import frc.robot.commands.PIDRamp;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
@@ -36,27 +37,23 @@ public class RobotContainer {
     private final JoystickButton PID = new JoystickButton(driver, XboxController.Button.kX.value);
     private final POVButton liftUp = new POVButton(operator, 0);
     private final POVButton liftDown = new POVButton(operator, 180);
-    private final JoystickButton tiltToggle = new JoystickButton(operator, 5);
+    private final POVButton flipperUp = new POVButton(operator, 90);
+    private final POVButton flipperDown = new POVButton(operator, 270);
     private final JoystickButton clampToggle = new JoystickButton(operator, 2);
     private final JoystickButton extendToggle = new JoystickButton(operator, 3);
     private final JoystickButton pull = new JoystickButton(operator, 6);
     private final JoystickButton push = new JoystickButton(operator, 4);
+    private final JoystickButton position1 = new JoystickButton(operator, 7);
+    private final JoystickButton position2 = new JoystickButton(operator, 8);
+    private final JoystickButton position3 = new JoystickButton(operator, 10);
+    private final JoystickButton position4 = new JoystickButton(operator, 12);
+    private final JoystickButton position5 = new JoystickButton(operator, 11);
 
     
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private Command PIDRamp = new PIDRamp(s_Swerve).repeatedly();
-    private InstantCommand armDown = new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, -1));
-    private InstantCommand armUp = new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 1));
-    private InstantCommand armStop = new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 0));
-    private InstantCommand extend = new InstantCommand(() -> armSubsystem.toggleClamper());
-    private InstantCommand flip = new InstantCommand(() -> armSubsystem.toggleFlipper());
-    private InstantCommand clamp = new InstantCommand(() -> armSubsystem.toggleClamper());
-    private InstantCommand pullIn = new InstantCommand(() -> armSubsystem.setPuller(1));
-    private InstantCommand pushOut = new InstantCommand(() -> armSubsystem.setPuller(-1));
-    private InstantCommand stopPuller = new InstantCommand(() -> armSubsystem.setPuller(0));
-
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -84,20 +81,31 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         PID.whileTrue(PIDRamp);
         liftUp
-            .onTrue(armUp)
-            .onFalse(armStop);
+            .onTrue(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 1)))
+            .onFalse(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 0)));
         liftDown
-            .onTrue(armDown)
-            .onFalse(armStop);
+            .onTrue(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, -1)))
+            .onFalse(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 0)));
         pull
-            .onTrue(pullIn)
-            .onFalse(pushOut);
+            .onTrue(new InstantCommand(() -> armSubsystem.setPuller(1)))
+            .onFalse(new InstantCommand(() -> armSubsystem.setPuller(0)));
         push
-            .onTrue(pushOut)
-            .onFalse(stopPuller);
-        extendToggle.onTrue(extend);
-        clampToggle.onTrue(clamp);
-        tiltToggle.onTrue(flip);
+            .onTrue(new InstantCommand(() -> armSubsystem.setPuller(-1)))
+            .onFalse(new InstantCommand(() -> armSubsystem.setPuller(0)));
+        flipperUp
+            .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(.25)))
+            .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
+        flipperDown
+            .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(-.25)))
+            .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
+        extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
+        clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
+        position1.onTrue(new MoveToSetpoint(armSubsystem, 1));
+        position2.onTrue(new MoveToSetpoint(armSubsystem, 2));
+        position3.onTrue(new MoveToSetpoint(armSubsystem, 3));
+        position4.onTrue(new MoveToSetpoint(armSubsystem, 4));
+        position5.onTrue(new MoveToSetpoint(armSubsystem, 5));
+
     }
 
     /**
