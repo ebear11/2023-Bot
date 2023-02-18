@@ -14,7 +14,11 @@ public final class Constants {
     public static final double stickDeadband = 0.05;
     public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .75;
-    public static final class positionValue {
+    public static final double flipperP = .5;
+    public static final double flipperTol = 2;
+    public static final double armP = .5;
+    public static final double armTol = 3;
+    public static final class PositionValue {
         public static final double armPos1 = 500;
         public static final double flipperPos1 = -250;
 
@@ -91,7 +95,7 @@ public final class Constants {
 
         /* Drive Motor Characterization Values 
          * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-        public static final double driveKS = (0.32 / 12); //TODO: This must be tuned to specific robot
+        public static final double driveKS = (0.32 / 12); 
         public static final double driveKV = (1.51 / 12);
         public static final double driveKA = (0.27 / 12);
 

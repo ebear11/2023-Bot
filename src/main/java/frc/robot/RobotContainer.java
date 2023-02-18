@@ -65,7 +65,7 @@ public class RobotContainer {
                 () -> robotCentric.getAsBoolean()
             )
         );
-
+        armSubsystem.setDefaultCommand(new InstantCommand(() -> armSubsystem.stopAllMotors()));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -81,11 +81,11 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         PID.whileTrue(PIDRamp);
         liftUp
-            .onTrue(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 1)))
-            .onFalse(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 0)));
+            .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(1)))
+            .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
         liftDown
-            .onTrue(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, -1)))
-            .onFalse(new InstantCommand(() -> armSubsystem.moveArm(Constants.armSetpoint, 0)));
+            .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(-1)))
+            .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
         pull
             .onTrue(new InstantCommand(() -> armSubsystem.setPuller(1)))
             .onFalse(new InstantCommand(() -> armSubsystem.setPuller(0)));
@@ -100,11 +100,11 @@ public class RobotContainer {
             .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
         extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
         clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
-        position1.onTrue(new MoveToSetpoint(armSubsystem, 1));
-        position2.onTrue(new MoveToSetpoint(armSubsystem, 2));
-        position3.onTrue(new MoveToSetpoint(armSubsystem, 3));
-        position4.onTrue(new MoveToSetpoint(armSubsystem, 4));
-        position5.onTrue(new MoveToSetpoint(armSubsystem, 5));
+        position1.whileTrue(new MoveToSetpoint(armSubsystem, 1).repeatedly());
+        position2.whileTrue(new MoveToSetpoint(armSubsystem, 2).repeatedly());
+        position3.whileTrue(new MoveToSetpoint(armSubsystem, 3).repeatedly());
+        position4.whileTrue(new MoveToSetpoint(armSubsystem, 4).repeatedly());
+        position5.whileTrue(new MoveToSetpoint(armSubsystem, 5).repeatedly());
 
     }
 
