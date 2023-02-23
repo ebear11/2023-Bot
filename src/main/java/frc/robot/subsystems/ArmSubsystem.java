@@ -33,7 +33,7 @@ public class ArmSubsystem extends SubsystemBase{
         armController.setTolerance(Constants.armTol);
         armController.setSetpoint(setPoint);
         if (!armController.atSetpoint()){
-        armMotor.set(armController.calculate(encoder.getAbsolutePosition(), setPoint));
+            armMotor.set(armController.calculate(encoder.getAbsolutePosition(), setPoint));
         }
         else{
             armMotor.stopMotor();
@@ -46,11 +46,14 @@ public class ArmSubsystem extends SubsystemBase{
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
         if (!flipperController.atSetpoint()) {
-        flipperMotor.set(ControlMode.PercentOutput, flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint));
+            flipperMotor.set(ControlMode.PercentOutput, flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint));
         }
         else {
             flipperMotor.set(ControlMode.PercentOutput, 0);
         }
+    }
+    public boolean atSetpoint(){
+        return flipperController.atSetpoint() && armController.atSetpoint();
     }
     public void stopAllMotors(){
         flipperMotor.set(ControlMode.PercentOutput, 0);
@@ -70,6 +73,9 @@ public class ArmSubsystem extends SubsystemBase{
     }
     public void retractExtender(){
         extender.set(Value.kReverse);;
+    }
+    public void openClamper(){
+        clamper.set(Value.kReverse);
     }
     @Override
     public void periodic() {

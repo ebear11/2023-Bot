@@ -1,7 +1,9 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
-import frc.robot.commands.PIDRamp;
+import frc.robot.commands.MoveToSetpoint;
+//import frc.robot.commands.PIDRamp;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.Swerve;
 
 import java.util.HashMap;
@@ -20,13 +22,20 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 public class Auto extends SequentialCommandGroup {
-    public Auto(Swerve s_Swerve){
+    public Auto(Swerve s_Swerve, ArmSubsystem armSubsystem){
         HashMap<String, Command> eventMap = new HashMap<>();
+        SequentialCommandGroup grabCube = new SequentialCommandGroup(new InstantCommand(() -> armSubsystem.openClamper()));
+        grabCube.addCommands(new MoveToSetpoint(armSubsystem, 1));
+        grabCube.addCommands(new InstantCommand(() -> armSubsystem.setPuller(.33)));
+        grabCube.addCommands(new WaitCommand(.5));
+        grabCube.addCommands(new InstantCommand(() -> armSubsystem.setPuller(0)));
+        grabCube.addCommands(new InstantCommand(()-> armSubsystem.toggleClamper()));
+        grabCube.addCommands(new MoveToSetpoint(armSubsystem, 3));
+
         // wait command placeholder
-        eventMap.put("drop cube", new WaitCommand(5));
-        eventMap.put("grab cube", new WaitCommand(2));
-        eventMap.put("drop cube", new WaitCommand(5));
-        eventMap.put("balance", new PIDRamp(s_Swerve).repeatedly());
+        eventMap.put("drop cube", new InstantCommand(() -> armSubsystem.openClamper()));
+        eventMap.put("grab cube", grabCube);
+        eventMap.put("drop cube", new InstantCommand(() -> armSubsystem.openClamper()));
 
         PathPlannerTrajectory path = PathPlanner.loadPath("Path", new PathConstraints(4, 3));
         var thetaController =
