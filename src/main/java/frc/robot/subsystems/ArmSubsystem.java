@@ -29,6 +29,7 @@ public class ArmSubsystem extends SubsystemBase{
     public ArmSubsystem() {
         extender.set(Value.kReverse);
         clamper.set(Value.kReverse);
+        armMotor2.setInverted(Constants.setArmMotorInverted);
     }
     public void moveArmMan(double input){
         armMotor.set(ControlMode.PercentOutput, input);

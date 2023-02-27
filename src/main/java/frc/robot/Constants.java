@@ -18,6 +18,10 @@ public final class Constants {
     public static final double flipperTol = .03;
     public static final double armP = .25;
     public static final double armTol = .03;
+
+    // set to invert second arm motor
+    public static final boolean setArmMotorInverted = false;
+
     public static final class PositionValue {
         public static final double armPos1 = .5;
         public static final double flipperPos1 = .65;
