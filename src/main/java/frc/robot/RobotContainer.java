@@ -1,10 +1,15 @@
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
@@ -48,24 +53,51 @@ public class RobotContainer {
     private final JoystickButton position3 = new JoystickButton(operator, 10);
     private final JoystickButton position4 = new JoystickButton(operator, 12);
     private final JoystickButton position5 = new JoystickButton(operator, 11);
-
     
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private Command PIDRamp = new PIDRamp(s_Swerve).repeatedly();
+    private InstantCommand stopMotors = new InstantCommand(() -> armSubsystem.stopAllMotors());
+    private SequentialCommandGroup grabPOS = new SequentialCommandGroup();
+    private SequentialCommandGroup dropTop = new SequentialCommandGroup();
+    private SequentialCommandGroup dropMid = new SequentialCommandGroup();
+    private SequentialCommandGroup idle = new SequentialCommandGroup();
+    private SequentialCommandGroup ground = new SequentialCommandGroup();
+    ConditionalCommand idleDefault = new ConditionalCommand(idle, new WaitCommand(1), () -> !armSubsystem.getStop());
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        grabPOS.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()));
+        grabPOS.addCommands(new WaitCommand(1), new MoveToSetpoint(armSubsystem, 1));
+        grabPOS.addCommands(new InstantCommand(() -> armSubsystem.openClamper()), new WaitCommand(.1));
+        grabPOS.addCommands(new InstantCommand(() -> armSubsystem.setPuller(1)), new MoveToSetpoint(armSubsystem, 2));
+        grabPOS.addCommands(new InstantCommand(() -> armSubsystem.closeClamper()), new WaitCommand(.1), new InstantCommand(() -> armSubsystem.setPuller(0)));
+
+        dropTop.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new MoveToSetpoint(armSubsystem, 2));
+        dropTop.addCommands(new InstantCommand(() -> armSubsystem.toggleExtender()), new InstantCommand(() -> armSubsystem.setPuller(-1)));
+        dropTop.addCommands(new WaitCommand(.1), new InstantCommand(() -> armSubsystem.setPuller(0)));
+
+        dropMid.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()));
+        dropMid.addCommands(new MoveToSetpoint(armSubsystem, 3));
+        dropMid.addCommands(new InstantCommand(() -> armSubsystem.setPuller(-1)), new WaitCommand(.1), new InstantCommand(() -> armSubsystem.setPuller(0)));
+
+        ground.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new MoveToSetpoint(armSubsystem, 4));
+        ground.addCommands(new InstantCommand(() -> armSubsystem.toggleExtender()), new InstantCommand(() -> armSubsystem.setPuller(-1)));
+        ground.addCommands(new WaitCommand(.1), new InstantCommand(() -> armSubsystem.setPuller(0)));
+        idle.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new MoveToSetpoint(armSubsystem, 5));
+
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> DriveCurve.applyDriveCurve(translationAxis), 
-                () -> DriveCurve.applyDriveCurve(strafeAxis), 
+                () -> DriveCurve.applyDriveCurve(-driver.getRawAxis(translationAxis)), 
+                () -> DriveCurve.applyDriveCurve(-driver.getRawAxis(strafeAxis)), 
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );
-        armSubsystem.setDefaultCommand(new InstantCommand(() -> armSubsystem.stopAllMotors()));
+        armSubsystem.setDefaultCommand(idleDefault);
+//        armSubsystem.setDefaultCommand(idle);
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -98,10 +130,10 @@ public class RobotContainer {
         flipperDown
             .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(-.25)))
             .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
-        extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
+        extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleExtender()));
         clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
         position1.whileTrue(new MoveToSetpoint(armSubsystem, 1).repeatedly());
-        position2.whileTrue(new MoveToSetpoint(armSubsystem, 2).repeatedly());
+        position2.whileTrue(grabPOS);
         position3.whileTrue(new MoveToSetpoint(armSubsystem, 3).repeatedly());
         position4.whileTrue(new MoveToSetpoint(armSubsystem, 4).repeatedly());
         position5.whileTrue(new MoveToSetpoint(armSubsystem, 5).repeatedly());

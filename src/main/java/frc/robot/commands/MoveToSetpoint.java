@@ -27,7 +27,8 @@ public class MoveToSetpoint extends CommandBase {
 
     @Override
     public void execute() {
-        subsystem.retractExtender();
+        subsystem.moveArm(setPoint);
+        subsystem.moveFlipper(setPoint);
     }
     @Override
     public boolean isFinished(){

@@ -14,25 +14,25 @@ public final class Constants {
     public static final double stickDeadband = 0.05;
     public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .75;
-    public static final double flipperP = .5;
-    public static final double flipperTol = 2;
-    public static final double armP = .5;
-    public static final double armTol = 3;
+    public static final double flipperP = .05;
+    public static final double flipperTol = .03;
+    public static final double armP = .25;
+    public static final double armTol = .03;
     public static final class PositionValue {
-        public static final double armPos1 = 500;
-        public static final double flipperPos1 = -250;
+        public static final double armPos1 = .5;
+        public static final double flipperPos1 = .65;
 
-        public static final double armPos2 = 1000;
-        public static final double flipperPos2 = 0;
+        public static final double armPos2 = .49;
+        public static final double flipperPos2 = .64;
 
-        public static final double armPos3 = 1500;
-        public static final double flipperPos3 = 250;
+        public static final double armPos3 = .42;
+        public static final double flipperPos3 = .60;
 
-        public static final double armPos4 = 2000;
-        public static final double flipperPos4 = 500;
+        public static final double armPos4 = .45;
+        public static final double flipperPos4 = .4;
 
-        public static final double armPos5 = 2500;
-        public static final double flipperPos5 = 750;
+        public static final double armPos5 = .5;
+        public static final double flipperPos5 = .2;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;
