@@ -34,4 +34,8 @@ public class MoveToSetpoint extends CommandBase {
     public boolean isFinished(){
         return subsystem.atSetpoint();
     }
+    @Override
+    public void end(boolean interrupted){
+        subsystem.stopAllMotors();
+    }
 }

@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -15,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
 import frc.robot.autos.Auto;
 import frc.robot.commands.MoveToSetpoint;
-import frc.robot.commands.PIDRamp;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmSubsystem;
@@ -39,7 +36,6 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton PID = new JoystickButton(driver, XboxController.Button.kX.value);
     private final POVButton liftUp = new POVButton(operator, 0);
     private final POVButton liftDown = new POVButton(operator, 180);
     private final POVButton flipperUp = new POVButton(operator, 90);
@@ -53,12 +49,13 @@ public class RobotContainer {
     private final JoystickButton position3 = new JoystickButton(operator, 10);
     private final JoystickButton position4 = new JoystickButton(operator, 12);
     private final JoystickButton position5 = new JoystickButton(operator, 11);
-    
+    private final JoystickButton stopArm = new JoystickButton(driver, XboxController.Button.kStart.value);
+    private final JoystickButton startArm = new JoystickButton(driver, XboxController.Button.kBack.value);
+
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
-    private Command PIDRamp = new PIDRamp(s_Swerve).repeatedly();
-    private InstantCommand stopMotors = new InstantCommand(() -> armSubsystem.stopAllMotors());
+    //private InstantCommand stopMotors = new InstantCommand(() -> armSubsystem.stopAllMotors());
     private SequentialCommandGroup grabPOS = new SequentialCommandGroup();
     private SequentialCommandGroup dropTop = new SequentialCommandGroup();
     private SequentialCommandGroup dropMid = new SequentialCommandGroup();
@@ -85,7 +82,7 @@ public class RobotContainer {
         ground.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new MoveToSetpoint(armSubsystem, 4));
         ground.addCommands(new InstantCommand(() -> armSubsystem.toggleExtender()), new InstantCommand(() -> armSubsystem.setPuller(-1)));
         ground.addCommands(new WaitCommand(.1), new InstantCommand(() -> armSubsystem.setPuller(0)));
-        idle.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new MoveToSetpoint(armSubsystem, 5));
+        idle.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new WaitCommand(2), new MoveToSetpoint(armSubsystem, 5));
 
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
@@ -96,8 +93,7 @@ public class RobotContainer {
                 () -> robotCentric.getAsBoolean()
             )
         );
-        armSubsystem.setDefaultCommand(idleDefault);
-//        armSubsystem.setDefaultCommand(idle);
+//        armSubsystem.setDefaultCommand(idleDefault);
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -111,7 +107,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        PID.whileTrue(PIDRamp);
         liftUp
             .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(1)))
             .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
@@ -133,11 +128,12 @@ public class RobotContainer {
         extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleExtender()));
         clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
         position1.whileTrue(new MoveToSetpoint(armSubsystem, 1).repeatedly());
-        position2.whileTrue(grabPOS);
+        position2.whileTrue(new MoveToSetpoint(armSubsystem, 2).repeatedly());
         position3.whileTrue(new MoveToSetpoint(armSubsystem, 3).repeatedly());
         position4.whileTrue(new MoveToSetpoint(armSubsystem, 4).repeatedly());
         position5.whileTrue(new MoveToSetpoint(armSubsystem, 5).repeatedly());
-
+        stopArm.onTrue(new InstantCommand(() -> armSubsystem.setStop(true)));
+        startArm.onTrue(new InstantCommand(() -> armSubsystem.setStop(false)));
     }
 
     /**
