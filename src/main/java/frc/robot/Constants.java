@@ -14,29 +14,29 @@ public final class Constants {
     public static final double stickDeadband = 0.05;
     public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .75;
-    public static final double flipperP = .05;
-    public static final double flipperTol = .03;
-    public static final double armP = .25;
-    public static final double armTol = .03;
+    public static final double flipperP = 2;
+    public static final double flipperTol = .0075;
+    public static final double armP = 2;
+    public static final double armTol = .01;
 
     // set to invert second arm motor
     public static final boolean setArmMotorInverted = false;
 
     public static final class PositionValue {
-        public static final double armPos1 = .5;
-        public static final double flipperPos1 = .65;
+        public static final double armPos1 = .2155;
+        public static final double flipperPos1 = .6175;
 
-        public static final double armPos2 = .49;
-        public static final double flipperPos2 = .64;
+        public static final double armPos2 = .3;
+        public static final double flipperPos2 = .328;
 
-        public static final double armPos3 = .42;
-        public static final double flipperPos3 = .60;
+        public static final double armPos3 = .35;
+        public static final double flipperPos3 = .34;
 
-        public static final double armPos4 = .45;
-        public static final double flipperPos4 = .4;
+        public static final double armPos4 = .525;
+        public static final double flipperPos4 = .3;
 
-        public static final double armPos5 = .5;
-        public static final double flipperPos5 = .2;
+        public static final double armPos5 = .555;
+        public static final double flipperPos5 = .3;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;

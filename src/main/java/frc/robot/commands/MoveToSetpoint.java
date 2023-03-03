@@ -5,6 +5,7 @@ import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
@@ -12,6 +13,7 @@ public class MoveToSetpoint extends CommandBase {
     ArmSubsystem subsystem;
     int setPoint;
     HashMap<Integer, double[]> posMap;
+    Timer timer = new Timer();
     public MoveToSetpoint(ArmSubsystem subsystem, int setPoint) {
         this.subsystem = subsystem;
         this.setPoint = setPoint;
@@ -24,11 +26,15 @@ public class MoveToSetpoint extends CommandBase {
 
         addRequirements(subsystem);
     }
-
+    @Override
+    public void initialize(){
+        timer.reset();
+        timer.start();
+    }
     @Override
     public void execute() {
-        subsystem.moveArm(setPoint);
-        subsystem.moveFlipper(setPoint);
+        subsystem.moveArm(posMap.get(setPoint)[0]);
+        subsystem.moveFlipper(posMap.get(setPoint)[1]);
     }
     @Override
     public boolean isFinished(){

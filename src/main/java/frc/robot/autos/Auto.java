@@ -26,9 +26,7 @@ public class Auto extends SequentialCommandGroup {
         HashMap<String, Command> eventMap = new HashMap<>();
         SequentialCommandGroup grabCube = new SequentialCommandGroup(new InstantCommand(() -> armSubsystem.openClamper()));
         grabCube.addCommands(new MoveToSetpoint(armSubsystem, 1));
-        grabCube.addCommands(new InstantCommand(() -> armSubsystem.setPuller(.33)));
         grabCube.addCommands(new WaitCommand(.5));
-        grabCube.addCommands(new InstantCommand(() -> armSubsystem.setPuller(0)));
         grabCube.addCommands(new InstantCommand(()-> armSubsystem.toggleClamper()));
         grabCube.addCommands(new MoveToSetpoint(armSubsystem, 3));
 

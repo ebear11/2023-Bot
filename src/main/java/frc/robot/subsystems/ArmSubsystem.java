@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase{
-    CANSparkMax puller = new CANSparkMax(30, MotorType.kBrushless);
     TalonFX armMotor = new TalonFX(31);
     TalonFX armMotor2 = new TalonFX(33);
     CANSparkMax flipperMotor = new CANSparkMax(32, MotorType.kBrushless);
@@ -27,25 +26,32 @@ public class ArmSubsystem extends SubsystemBase{
     DoubleSolenoid clamper = new DoubleSolenoid(60, PneumaticsModuleType.REVPH,2,3);
     boolean stopArm = false;
     public ArmSubsystem() {
-        extender.set(Value.kReverse);
-        clamper.set(Value.kReverse);
-        armMotor2.setInverted(Constants.setArmMotorInverted);
+        extender.set(Value.kForward);
+        clamper.set(Value.kForward);
     }
     public void moveArmMan(double input){
-        armMotor.set(ControlMode.PercentOutput, input);
-        armMotor2.follow(armMotor);
+        armMotor.set(ControlMode.PercentOutput, -input);
+        armMotor2.set(ControlMode.PercentOutput, input);
     }
     
     public void moveArm(double setPoint){
         armController.setTolerance(Constants.armTol);
         armController.setSetpoint(setPoint);
         if (!armController.atSetpoint()){
-            armMotor.set(ControlMode.PercentOutput,armController.calculate(encoder.getAbsolutePosition(), setPoint));
+            double speed = armController.calculate(encoder.getAbsolutePosition(), setPoint);
+            if (speed > .25) {
+                speed = 0.25;
+            }
+            else if (speed < -.25){
+                speed = -0.25;            
+            }
+            armMotor.set(ControlMode.PercentOutput, -speed);
+            armMotor2.set(ControlMode.PercentOutput, speed);
         }
         else{
             armMotor.set(ControlMode.PercentOutput, 0);
+            armMotor2.set(ControlMode.PercentOutput, 0);
         }
-        armMotor2.follow(armMotor);
     }
     public void moveFlipperMan(double speed){
         flipperMotor.set(speed);
@@ -53,8 +59,15 @@ public class ArmSubsystem extends SubsystemBase{
     public void moveFlipper(double setPoint){
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
+        double speed = flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint);
+        if (speed > .25){
+            speed = .25;
+        }
+        else if (speed < -.25){
+            speed = -.25;
+        }
         if (!flipperController.atSetpoint()) {
-            flipperMotor.set(flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint));
+            flipperMotor.set(-speed);
         }
         else {
             flipperMotor.set(0);
@@ -77,20 +90,17 @@ public class ArmSubsystem extends SubsystemBase{
         clamper.toggle();
     }
 
-    public void setPuller(double speed){
-        puller.set(speed);
-    }
     public void retractExtender(){
-        extender.set(Value.kReverse);
-    }
-    public void extendExtender(){
         extender.set(Value.kForward);
     }
+    public void extendExtender(){
+        extender.set(Value.kReverse);
+    }
     public void openClamper(){
-        clamper.set(Value.kReverse);
+        clamper.set(Value.kForward);
     }
     public void closeClamper(){
-        clamper.set(Value.kForward);
+        clamper.set(Value.kReverse);
     }
     public boolean getStop(){
         return stopArm;
