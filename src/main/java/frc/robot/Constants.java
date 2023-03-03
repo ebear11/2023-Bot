@@ -12,7 +12,32 @@ import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.05;
+    public static final double armSetpoint = 120.0;
+    public static final double driveCurveConstant = .75;
+    public static final double flipperP = 2;
+    public static final double flipperTol = .0075;
+    public static final double armP = 2;
+    public static final double armTol = .01;
 
+    // set to invert second arm motor
+    public static final boolean setArmMotorInverted = false;
+
+    public static final class PositionValue {
+        public static final double armPos1 = .2155;
+        public static final double flipperPos1 = .6175;
+
+        public static final double armPos2 = .3;
+        public static final double flipperPos2 = .328;
+
+        public static final double armPos3 = .35;
+        public static final double flipperPos3 = .34;
+
+        public static final double armPos4 = .525;
+        public static final double flipperPos4 = .3;
+
+        public static final double armPos5 = .555;
+        public static final double flipperPos5 = .3;
+    }
     public static final class Swerve {
         public static final int pigeonID = 30;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
@@ -24,7 +49,7 @@ public final class Constants {
         public static final double trackWidth = Units.inchesToMeters(23.6); 
         public static final double wheelBase = Units.inchesToMeters(23.6); 
         public static final double wheelCircumference = chosenModule.wheelCircumference;
-
+        
         /* Swerve Kinematics 
          * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
          public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
@@ -67,14 +92,14 @@ public final class Constants {
         public static final double angleKF = chosenModule.angleKF;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.05; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 0.05;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values 
          * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-        public static final double driveKS = (0.32 / 12); //TODO: This must be tuned to specific robot
+        public static final double driveKS = (0.32 / 12); 
         public static final double driveKV = (1.51 / 12);
         public static final double driveKA = (0.27 / 12);
 
@@ -87,7 +112,8 @@ public final class Constants {
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
         public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
-
+        // program constants
+        public static final double armSetpoint = 1000;
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         public static final class Mod0 { 
@@ -130,7 +156,7 @@ public final class Constants {
         }
     }
 
-    public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
+    public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
