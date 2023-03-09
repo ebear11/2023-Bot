@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
 import frc.robot.autos.Auto;
+import frc.robot.autos.exampleAuto;
 import frc.robot.commands.MoveToSetpoint;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
@@ -123,7 +124,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        //return new exampleAuto(s_Swerve);
-        return new Auto(s_Swerve, armSubsystem);
+        return new exampleAuto(s_Swerve);
+        //return new Auto(s_Swerve, armSubsystem);
+        //return new WaitCommand(1);
     }
 }

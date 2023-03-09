@@ -34,7 +34,14 @@ public class MoveToSetpoint extends CommandBase {
     @Override
     public void execute() {
         subsystem.moveArm(posMap.get(setPoint)[0]);
-        subsystem.moveFlipper(posMap.get(setPoint)[1]);
+        if (setPoint == 5 || setPoint == 4){
+            if (timer.get() > .5){
+                subsystem.moveFlipper(posMap.get(setPoint)[1]);
+            }
+        }
+        else {
+            subsystem.moveFlipper(posMap.get(setPoint)[1]);        
+        }
     }
     @Override
     public boolean isFinished(){

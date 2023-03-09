@@ -13,7 +13,7 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.05;
     public static final double armSetpoint = 120.0;
-    public static final double driveCurveConstant = .75;
+    public static final double driveCurveConstant = .45;
     public static final double flipperP = 2;
     public static final double flipperTol = .0075;
     public static final double armP = 2;
@@ -26,17 +26,17 @@ public final class Constants {
         public static final double armPos1 = .2155;
         public static final double flipperPos1 = .6175;
 
-        public static final double armPos2 = .3;
-        public static final double flipperPos2 = .328;
+        public static final double armPos2 = .345;
+        public static final double flipperPos2 = .318;
 
-        public static final double armPos3 = .35;
-        public static final double flipperPos3 = .34;
+        public static final double armPos3 = .38;
+        public static final double flipperPos3 = .37;
 
-        public static final double armPos4 = .525;
-        public static final double flipperPos4 = .3;
+        public static final double armPos4 = .575;
+        public static final double flipperPos4 = .31;
 
-        public static final double armPos5 = .555;
-        public static final double flipperPos5 = .3;
+        public static final double armPos5 = .595;
+        public static final double flipperPos5 = .31;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;
