@@ -41,8 +41,8 @@ public class RobotContainer {
     private final POVButton liftDown = new POVButton(operator, 180);
     private final POVButton flipperUp = new POVButton(operator, 90);
     private final POVButton flipperDown = new POVButton(operator, 270);
-    private final JoystickButton clampToggle = new JoystickButton(operator, 2);
-    private final JoystickButton extendToggle = new JoystickButton(operator, 3);
+    private final JoystickButton clampToggle = new JoystickButton(operator, 1);
+    private final JoystickButton extendToggle = new JoystickButton(operator, 2);
     private final JoystickButton position1 = new JoystickButton(operator, 7);
     private final JoystickButton position2 = new JoystickButton(operator, 8);
     private final JoystickButton position3 = new JoystickButton(operator, 10);
@@ -61,7 +61,6 @@ public class RobotContainer {
     private SequentialCommandGroup idle = new SequentialCommandGroup();
     private SequentialCommandGroup ground = new SequentialCommandGroup();
     private SequentialCommandGroup pos1 = new SequentialCommandGroup();
-    ConditionalCommand idleDefault = new ConditionalCommand(idle, new WaitCommand(1), () -> !armSubsystem.getStop());
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {

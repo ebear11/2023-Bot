@@ -23,20 +23,20 @@ public final class Constants {
     public static final boolean setArmMotorInverted = false;
 
     public static final class PositionValue {
-        public static final double armPos1 = .2155;
+        public static final double armPos1 = .064;
         public static final double flipperPos1 = .6175;
 
-        public static final double armPos2 = .345;
-        public static final double flipperPos2 = .318;
+        public static final double armPos2 = .253;
+        public static final double flipperPos2 = .189;
 
-        public static final double armPos3 = .38;
-        public static final double flipperPos3 = .37;
+        public static final double armPos3 = .143;
+        public static final double flipperPos3 = .373;
 
-        public static final double armPos4 = .575;
-        public static final double flipperPos4 = .31;
+        public static final double armPos4 = .42;
+        public static final double flipperPos4 = .24;
 
-        public static final double armPos5 = .595;
-        public static final double flipperPos5 = .31;
+        public static final double armPos5 = .44;
+        public static final double flipperPos5 = .24;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;

@@ -24,16 +24,12 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 public class Auto extends SequentialCommandGroup {
     public Auto(Swerve s_Swerve, ArmSubsystem armSubsystem){
         HashMap<String, Command> eventMap = new HashMap<>();
-        SequentialCommandGroup grabCube = new SequentialCommandGroup(new InstantCommand(() -> armSubsystem.openClamper()));
-        grabCube.addCommands(new MoveToSetpoint(armSubsystem, 1));
-        grabCube.addCommands(new WaitCommand(.5));
-        grabCube.addCommands(new InstantCommand(()-> armSubsystem.toggleClamper()));
-        grabCube.addCommands(new MoveToSetpoint(armSubsystem, 3));
-
+        SequentialCommandGroup dropCube = new SequentialCommandGroup(new MoveToSetpoint(armSubsystem, 5), new WaitCommand(.3));
+        dropCube.addCommands(new InstantCommand(() -> armSubsystem.openClamper()));
+        dropCube.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()));
+        dropCube.addCommands(new MoveToSetpoint(armSubsystem, 1));
         // wait command placeholder
-        eventMap.put("drop cube", new InstantCommand(() -> armSubsystem.openClamper()));
-        eventMap.put("grab cube", grabCube);
-        eventMap.put("drop cube", new InstantCommand(() -> armSubsystem.openClamper()));
+        eventMap.put("drop cube", dropCube);
 
         PathPlannerTrajectory path = PathPlanner.loadPath("Path", new PathConstraints(4, 3));
         var thetaController =
