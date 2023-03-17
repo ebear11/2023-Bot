@@ -15,7 +15,7 @@ public final class Constants {
     public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .45;
     public static final double flipperP = 2;
-    public static final double flipperTol = .0075;
+    public static final double flipperTol = .01;
     public static final double armP = 2;
     public static final double armTol = .01;
 
@@ -37,6 +37,8 @@ public final class Constants {
 
         public static final double armPos5 = .44;
         public static final double flipperPos5 = .24;
+        public static final double armPos6 = .40;
+        public static final double flipperPos6 = .24;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;
@@ -164,7 +166,7 @@ public final class Constants {
     
         public static final double kPXController = .3;
         public static final double kPYController = .3;
-        public static final double kPThetaController = .3;
+        public static final double kPThetaController = .7;
     
         /* Constraint for the motion profilied robot angle controller */
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

@@ -48,6 +48,7 @@ public class RobotContainer {
     private final JoystickButton position3 = new JoystickButton(operator, 10);
     private final JoystickButton position4 = new JoystickButton(operator, 12);
     private final JoystickButton position5 = new JoystickButton(operator, 11);
+    private final JoystickButton position6 = new JoystickButton(operator, 9);
     private final JoystickButton stopArm = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton startArm = new JoystickButton(driver, XboxController.Button.kBack.value);
 
@@ -112,6 +113,7 @@ public class RobotContainer {
         position3.whileTrue(new MoveToSetpoint(armSubsystem, 3));
         position4.whileTrue(new MoveToSetpoint(armSubsystem, 4));
         position5.whileTrue(new MoveToSetpoint(armSubsystem, 5));
+        position6.whileTrue(new MoveToSetpoint(armSubsystem, 6));
         stopArm.onTrue(new InstantCommand(() -> armSubsystem.setStop(true)));
         startArm.onTrue(new InstantCommand(() -> armSubsystem.setStop(false)));
     }
@@ -123,8 +125,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
-        //return new Auto(s_Swerve, armSubsystem);
+        //return new exampleAuto(s_Swerve);
+        return new Auto(s_Swerve, armSubsystem);
         //return new WaitCommand(1);
     }
 }

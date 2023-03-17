@@ -23,7 +23,7 @@ public class MoveToSetpoint extends CommandBase {
         posMap.put(3, new double[] {Constants.PositionValue.armPos3, Constants.PositionValue.flipperPos3});
         posMap.put(4, new double[] {Constants.PositionValue.armPos4, Constants.PositionValue.flipperPos4});
         posMap.put(5, new double[] {Constants.PositionValue.armPos5, Constants.PositionValue.flipperPos5});
-
+        posMap.put(6, new double[] {Constants.PositionValue.armPos6, Constants.PositionValue.flipperPos6});
         addRequirements(subsystem);
     }
     @Override
