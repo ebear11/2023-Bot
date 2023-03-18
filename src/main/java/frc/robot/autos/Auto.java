@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -22,14 +23,12 @@ import frc.robot.subsystems.Swerve;
 public class Auto extends SequentialCommandGroup {
     public Auto(Swerve s_Swerve, ArmSubsystem armSubsystem){
         HashMap<String, Command> eventMap = new HashMap<>();
-        SequentialCommandGroup dropCube = new SequentialCommandGroup(new MoveToSetpoint(armSubsystem, 5), new WaitCommand(.3));
-        dropCube.addCommands(new InstantCommand(() -> armSubsystem.openClamper()));
-        dropCube.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()));
-        dropCube.addCommands(new MoveToSetpoint(armSubsystem, 1));
+        SequentialCommandGroup dropCube = new SequentialCommandGroup(new MoveToSetpoint(armSubsystem, 1, true),new MoveToSetpoint(armSubsystem, 7, true));
+        dropCube.addCommands(new InstantCommand(() -> armSubsystem.extendExtender()), new WaitCommand(1),new InstantCommand(() -> armSubsystem.openClamper()), new InstantCommand(() -> armSubsystem.retractExtender()),new WaitCommand(.5));
         // wait command placeholder
         //eventMap.put("drop cube", dropCube);
 
-        PathPlannerTrajectory path = PathPlanner.loadPath("Path", new PathConstraints(4, 3), true);
+        PathPlannerTrajectory path = PathPlanner.loadPath("HardPath", new PathConstraints(1, 3), true);
         var thetaController =
             new ProfiledPIDController(
                 Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
@@ -51,15 +50,16 @@ public class Auto extends SequentialCommandGroup {
             Constants.Swerve.swerveKinematics, 
             new PIDController(Constants.AutoConstants.kPXController, 0, 0), 
             new PIDController(Constants.AutoConstants.kPYController, 0, 0), 
-            new PIDController(Constants.AutoConstants.kPThetaController, 0, 0), 
+            new PIDController(Constants.AutoConstants.kPThetaController, 0, .2), 
             s_Swerve::setModuleStates,
             true,
             s_Swerve);
             FollowPathWithEvents command = new FollowPathWithEvents(swerveCommand,path.getMarkers(),eventMap);
+            ParallelCommandGroup driveAuto = new ParallelCommandGroup(new MoveToSetpoint(armSubsystem, 1), command);
             addCommands(
-//                dropCube,
+                dropCube,
                 new InstantCommand(() -> s_Swerve.resetOdometry(path.getInitialPose())),
-                command
+                driveAuto
             );
     }
 }
