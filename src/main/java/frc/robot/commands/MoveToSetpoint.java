@@ -95,7 +95,7 @@ public class MoveToSetpoint extends CommandBase {
         else if (setPoint == 1 && timer.get() >= 1){
             return true;
         }
-        else if (setPoint == 7 && timer.get() >= 7){
+        else if (setPoint == 7 && timer.get() >= 6){
             return true;
         }
         else {
