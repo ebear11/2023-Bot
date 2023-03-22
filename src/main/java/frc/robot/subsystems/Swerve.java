@@ -23,7 +23,6 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
-    private final Field2d m_field = new Field2d();
     public Swerve() {
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
@@ -43,7 +42,6 @@ public class Swerve extends SubsystemBase {
         resetModulesToAbsolute();
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
-        SmartDashboard.putData("field",m_field);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -127,7 +125,6 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("X value" , xyz[0]);
         SmartDashboard.putNumber("Y value" , xyz[1]);
         SmartDashboard.putNumber("Z value" , xyz[2]);
-        m_field.setRobotPose(getPose());
 
 
     }
