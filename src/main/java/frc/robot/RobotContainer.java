@@ -3,8 +3,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -49,26 +50,19 @@ public class RobotContainer {
     private final JoystickButton position4 = new JoystickButton(operator, 12);
     private final JoystickButton position5 = new JoystickButton(operator, 11);
     private final JoystickButton position6 = new JoystickButton(operator, 9);
-    private final JoystickButton stopArm = new JoystickButton(driver, XboxController.Button.kStart.value);
-    private final JoystickButton startArm = new JoystickButton(driver, XboxController.Button.kBack.value);
+   
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     //private InstantCommand stopMotors = new InstantCommand(() -> armSubsystem.stopAllMotors());
-    private SequentialCommandGroup grabPOS = new SequentialCommandGroup();
-    private SequentialCommandGroup dropTop = new SequentialCommandGroup();
-    private SequentialCommandGroup dropMid = new SequentialCommandGroup();
-    private SequentialCommandGroup idle = new SequentialCommandGroup();
-    private SequentialCommandGroup ground = new SequentialCommandGroup();
     private SequentialCommandGroup pos1 = new SequentialCommandGroup();
-
+    private SendableChooser<Command> chooser = new SendableChooser<>();
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         pos1.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()));
         pos1.addCommands(new WaitCommand(.5));
         pos1.addCommands(new MoveToSetpoint(armSubsystem, 1).repeatedly());
-        idle.addCommands(new InstantCommand(() -> armSubsystem.retractExtender()), new WaitCommand(2), new MoveToSetpoint(armSubsystem, 5));
 
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
@@ -82,6 +76,10 @@ public class RobotContainer {
 //        armSubsystem.setDefaultCommand(idleDefault);
         // Configure the button bindings
         configureButtonBindings();
+        chooser.setDefaultOption("Simple Auto", new exampleAuto(s_Swerve, armSubsystem));
+        chooser.addOption("Platform Auto", new Auto(s_Swerve, armSubsystem));
+        SmartDashboard.putData(chooser);
+
     }
 
     /**
@@ -114,8 +112,6 @@ public class RobotContainer {
         position4.whileTrue(new MoveToSetpoint(armSubsystem, 4));
         position5.whileTrue(new MoveToSetpoint(armSubsystem, 5));
         position6.whileTrue(new MoveToSetpoint(armSubsystem, 6));
-        stopArm.onTrue(new InstantCommand(() -> armSubsystem.setStop(true)));
-        startArm.onTrue(new InstantCommand(() -> armSubsystem.setStop(false)));
     }
 
     /**
@@ -125,8 +121,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        //return new exampleAuto(s_Swerve);
         return new Auto(s_Swerve, armSubsystem);
+        //return chooser.getSelected();
         //return new WaitCommand(1);
     }
 }

@@ -50,7 +50,7 @@ public class MoveToSetpoint extends CommandBase {
     @Override
     public void execute() {
         if (setPoint == 4){
-            if (timer.get() > 1.195){
+            if (timer.get() > .97){
                 subsystem.moveFlipper(posMap.get(setPoint)[1]);
             }
         }
@@ -90,7 +90,7 @@ public class MoveToSetpoint extends CommandBase {
     @Override
     public boolean isFinished(){
         if (!auto){
-            return subsystem.atSetpoint();
+            return false;
         }
         else if (setPoint == 1 && timer.get() >= 1){
             return true;

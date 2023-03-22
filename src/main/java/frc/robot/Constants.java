@@ -26,22 +26,22 @@ public final class Constants {
         public static final double armPos1 = .064;
         public static final double flipperPos1 = .6175;
 
-        public static final double armPos2 = .253;
+        public static final double armPos2 = .233;
         public static final double flipperPos2 = .189;
 
-        public static final double armPos3 = .143;
-        public static final double flipperPos3 = .373;
+        public static final double armPos3 = .133;
+        public static final double flipperPos3 = .363;
 
-        public static final double armPos4 = .42;
-        public static final double flipperPos4 = .24;
+        public static final double armPos4 = .39;
+        public static final double flipperPos4 = .21;
 
-        public static final double armPos5 = .44;
-        public static final double flipperPos5 = .24;
-        public static final double armPos6 = .40;
-        public static final double flipperPos6 = .24;
+        public static final double armPos5 = .42;
+        public static final double flipperPos5 = .22;
+        public static final double armPos6 = .38;
+        public static final double flipperPos6 = .235;
 
-        public static final double armPos7 = .45;
-        public static final double flipperPos7 = .26;
+        public static final double armPos7 = .43;
+        public static final double flipperPos7 = .22;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;
