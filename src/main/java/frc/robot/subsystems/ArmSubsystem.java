@@ -98,10 +98,10 @@ public class ArmSubsystem extends SubsystemBase{
         extender.set(Value.kReverse);
     }
     public void openClamper(){
-        clamper.set(Value.kForward);
+        clamper.set(Value.kReverse);
     }
     public void closeClamper(){
-        clamper.set(Value.kReverse);
+        clamper.set(Value.kForward);
     }
     public boolean getStop(){
         return stopArm;

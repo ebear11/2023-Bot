@@ -15,7 +15,7 @@ public final class Constants {
     public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .45;
     public static final double flipperP = 2;
-    public static final double flipperTol = .0075;
+    public static final double flipperTol = .01;
     public static final double armP = 2;
     public static final double armTol = .01;
 
@@ -23,20 +23,25 @@ public final class Constants {
     public static final boolean setArmMotorInverted = false;
 
     public static final class PositionValue {
-        public static final double armPos1 = .2155;
+        public static final double armPos1 = .064;
         public static final double flipperPos1 = .6175;
 
-        public static final double armPos2 = .345;
-        public static final double flipperPos2 = .318;
+        public static final double armPos2 = .233;
+        public static final double flipperPos2 = .189;
 
-        public static final double armPos3 = .38;
-        public static final double flipperPos3 = .37;
+        public static final double armPos3 = .133;
+        public static final double flipperPos3 = .363;
 
-        public static final double armPos4 = .575;
-        public static final double flipperPos4 = .31;
+        public static final double armPos4 = .39;
+        public static final double flipperPos4 = .21;
 
-        public static final double armPos5 = .595;
-        public static final double flipperPos5 = .31;
+        public static final double armPos5 = .42;
+        public static final double flipperPos5 = .22;
+        public static final double armPos6 = .38;
+        public static final double flipperPos6 = .235;
+
+        public static final double armPos7 = .43;
+        public static final double flipperPos7 = .22;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;
@@ -157,14 +162,14 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxSpeedMetersPerSecond = .1;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
         public static final double kPXController = .3;
         public static final double kPYController = .3;
-        public static final double kPThetaController = .3;
+        public static final double kPThetaController = 0.0;
     
         /* Constraint for the motion profilied robot angle controller */
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

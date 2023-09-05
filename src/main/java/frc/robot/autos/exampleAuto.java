@@ -1,6 +1,8 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
+import frc.robot.commands.MoveToSetpoint;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.Swerve;
 
 import java.util.List;
@@ -14,11 +16,15 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class exampleAuto extends SequentialCommandGroup {
-    public exampleAuto(Swerve s_Swerve){
+    public exampleAuto(Swerve s_Swerve, ArmSubsystem armSubsystem){
+        SequentialCommandGroup dropCube = new SequentialCommandGroup(new MoveToSetpoint(armSubsystem, 1, true),new MoveToSetpoint(armSubsystem, 7, true));
+        dropCube.addCommands(new InstantCommand(() -> armSubsystem.extendExtender()), new WaitCommand(1),new InstantCommand(() -> armSubsystem.openClamper()), new InstantCommand(() -> armSubsystem.retractExtender()),new WaitCommand(.5));
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -51,11 +57,13 @@ public class exampleAuto extends SequentialCommandGroup {
                 thetaController,
                 s_Swerve::setModuleStates,
                 s_Swerve);
+        ParallelCommandGroup driveAuto = new ParallelCommandGroup(new MoveToSetpoint(armSubsystem, 1), swerveControllerCommand);
 
 
         addCommands(
+            dropCube,
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            swerveControllerCommand
+            driveAuto
         );
     }
 }
