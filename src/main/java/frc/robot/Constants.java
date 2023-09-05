@@ -11,6 +11,7 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+    public static final double crappyAutoTime = 1.3;
     public static final double stickDeadband = 0.05;
     public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .45;
@@ -23,25 +24,25 @@ public final class Constants {
     public static final boolean setArmMotorInverted = false;
 
     public static final class PositionValue {
-        public static final double armPos1 = .064;
+        public static final double armPos1 = .058;
         public static final double flipperPos1 = .6175;
 
-        public static final double armPos2 = .233;
+        public static final double armPos2 = .213;
         public static final double flipperPos2 = .189;
 
-        public static final double armPos3 = .133;
+        public static final double armPos3 = .127;
         public static final double flipperPos3 = .363;
 
-        public static final double armPos4 = .39;
+        public static final double armPos4 = .37;
         public static final double flipperPos4 = .21;
 
-        public static final double armPos5 = .42;
+        public static final double armPos5 = .405;
         public static final double flipperPos5 = .22;
-        public static final double armPos6 = .38;
+        public static final double armPos6 = .36;
         public static final double flipperPos6 = .235;
 
-        public static final double armPos7 = .43;
-        public static final double flipperPos7 = .22;
+        public static final double armPos7 = .418;
+        public static final double flipperPos7 = .23;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;
