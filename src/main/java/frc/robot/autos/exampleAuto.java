@@ -37,9 +37,9 @@ public class exampleAuto extends SequentialCommandGroup {
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-2, -.02)),
+                List.of(new Translation2d(0, -2)),
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-3, -.01, new Rotation2d(0)),
+                new Pose2d(0, -3, new Rotation2d(0)),
                 config);
 
         var thetaController =
@@ -57,13 +57,12 @@ public class exampleAuto extends SequentialCommandGroup {
                 thetaController,
                 s_Swerve::setModuleStates,
                 s_Swerve);
-        ParallelCommandGroup driveAuto = new ParallelCommandGroup(new MoveToSetpoint(armSubsystem, 1), swerveControllerCommand);
+        //ParallelCommandGroup driveAuto = new ParallelCommandGroup(new MoveToSetpoint(armSubsystem, 1), swerveControllerCommand);
 
 
         addCommands(
             dropCube,
-            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            driveAuto
+            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose()))
         );
     }
 }
