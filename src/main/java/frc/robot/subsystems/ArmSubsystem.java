@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -40,12 +41,7 @@ public class ArmSubsystem extends SubsystemBase{
         armController.setSetpoint(setPoint);
         if (!armController.atSetpoint()){
             double speed = armController.calculate(encoder.getAbsolutePosition(), setPoint);
-            if (speed > .25) {
-                speed = 0.25;
-            }
-            else if (speed < -.25){
-                speed = -0.25;            
-            }
+            speed = MathUtil.clamp(speed, -.25, .25);
             armMotor.set(ControlMode.PercentOutput, -speed);
             armMotor2.set(ControlMode.PercentOutput, speed);
         }
@@ -61,12 +57,7 @@ public class ArmSubsystem extends SubsystemBase{
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
         double speed = flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint);
-        if (speed > .25){
-            speed = .25;
-        }
-        else if (speed < -.25){
-            speed = -.25;
-        }
+        speed = MathUtil.clamp(speed, -.25, .25);
         if (!flipperController.atSetpoint()) {
             flipperMotor.set(-speed);
         }

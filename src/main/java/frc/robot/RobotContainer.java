@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
-import frc.robot.autos.Auto;
 import frc.robot.autos.crappyAuto;
-import frc.robot.autos.exampleAuto;
 import frc.robot.commands.MoveToSetpoint;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
@@ -77,9 +75,9 @@ public class RobotContainer {
 //        armSubsystem.setDefaultCommand(idleDefault);
         // Configure the button bindings
         configureButtonBindings();
-        chooser.setDefaultOption("Simple Auto", new exampleAuto(s_Swerve, armSubsystem));
-        chooser.addOption("Platform Auto", new Auto(s_Swerve, armSubsystem));
-        SmartDashboard.putData(chooser);
+        //chooser.setDefaultOption("Simple Auto", new exampleAuto(s_Swerve, armSubsystem));
+        //chooser.addOption("Platform Auto", new Auto(s_Swerve, armSubsystem));
+        //SmartDashboard.putData(chooser);
 
     }
 
