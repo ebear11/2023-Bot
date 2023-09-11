@@ -31,6 +31,14 @@ public class ArmSubsystem extends SubsystemBase{
         extender.set(Value.kForward);
         clamper.set(Value.kForward);
     }
+    
+    public double getArmDegrees() {
+        return encoder.getAbsolutePosition() * 360;
+    }
+    public double getFlipperDegrees() {
+        return encoderFlipper.getAbsolutePosition() * 360;
+    }
+
     public void moveArmMan(double input){
         armMotor.set(ControlMode.PercentOutput, -input);
         armMotor2.set(ControlMode.PercentOutput, input);
@@ -40,7 +48,7 @@ public class ArmSubsystem extends SubsystemBase{
         armController.setTolerance(Constants.armTol);
         armController.setSetpoint(setPoint);
         if (!armController.atSetpoint()){
-            double speed = armController.calculate(encoder.getAbsolutePosition(), setPoint);
+            double speed = armController.calculate(getArmDegrees(), setPoint);
             speed = MathUtil.clamp(speed, -.25, .25);
             armMotor.set(ControlMode.PercentOutput, -speed);
             armMotor2.set(ControlMode.PercentOutput, speed);
@@ -56,7 +64,7 @@ public class ArmSubsystem extends SubsystemBase{
     public void moveFlipper(double setPoint){
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
-        double speed = flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint);
+        double speed = flipperController.calculate(getFlipperDegrees(), setPoint);
         speed = MathUtil.clamp(speed, -.25, .25);
         if (!flipperController.atSetpoint()) {
             flipperMotor.set(-speed);
@@ -102,8 +110,8 @@ public class ArmSubsystem extends SubsystemBase{
     }
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm Encoder Value", encoder.getAbsolutePosition());
-        SmartDashboard.putNumber("Flipper Encoder Value", encoderFlipper.getAbsolutePosition());
+        SmartDashboard.putNumber("Arm Encoder Degrees", getArmDegrees());
+        SmartDashboard.putNumber("Flipper Encoder Degrees", getFlipperDegrees());
 
     }
 }
