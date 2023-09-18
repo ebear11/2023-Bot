@@ -14,11 +14,11 @@ public final class Constants {
     public static final double crappyAutoTime = 1.3;
     public static final double stickDeadband = 0.05;
     public static final double driveCurveConstant = .45;
-    public static final double flipperP = 5;
-    public static final double flipperTol = .005;
-    public static final double armP = 5;
-    public static final double armTol = .005;
-    public static final double balanceP = .5;
+    public static final double flipperP = .01;
+    public static final double flipperTol = .01;
+    public static final double armP = .02;
+    public static final double armTol = .01;
+    public static final double balanceP = .1;
     // set to invert second arm motor
     public static final boolean setArmMotorInverted = false;
 

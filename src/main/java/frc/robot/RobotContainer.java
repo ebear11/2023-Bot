@@ -103,7 +103,7 @@ public class RobotContainer {
         // flipperDown
         //     .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(-.25)))
         //     .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
-        snapBack.onTrue(new SnapBack(s_Swerve));
+        //snapBack.onTrue(new SnapBack(s_Swerve));
         extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleExtender()));
         clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
         position1
