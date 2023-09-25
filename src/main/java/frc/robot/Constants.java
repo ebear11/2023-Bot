@@ -13,36 +13,36 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double crappyAutoTime = 1.3;
     public static final double stickDeadband = 0.05;
-    public static final double armSetpoint = 120.0;
     public static final double driveCurveConstant = .45;
-    public static final double flipperP = 2;
+    public static final double flipperP = .01;
     public static final double flipperTol = .01;
-    public static final double armP = 2;
+    public static final double armP = .02;
     public static final double armTol = .01;
-
+    public static final double balanceP = .11;
     // set to invert second arm motor
     public static final boolean setArmMotorInverted = false;
 
     public static final class PositionValue {
-        public static final double armPos1 = .058;
-        public static final double flipperPos1 = .6175;
+        public static final double armPos1 = 20.88;
+        public static final double flipperPos1 = 222.3;
 
-        public static final double armPos2 = .213;
-        public static final double flipperPos2 = .189;
+        public static final double armPos2 = 57.7;
+        public static final double flipperPos2 = 98.08;
 
-        public static final double armPos3 = .127;
-        public static final double flipperPos3 = .363;
+        public static final double armPos3 = 47;
+        public static final double flipperPos3 = 150.68;
 
-        public static final double armPos4 = .37;
-        public static final double flipperPos4 = .21;
+        public static final double armPos4 = 120.2;
+        public static final double flipperPos4 = 78.6;
 
-        public static final double armPos5 = .405;
-        public static final double flipperPos5 = .22;
-        public static final double armPos6 = .36;
-        public static final double flipperPos6 = .235;
+        public static final double armPos5 = 131.8;
+        public static final double flipperPos5 = 79.2;
+        
+        public static final double armPos6 = 129.6;
+        public static final double flipperPos6 = 84.6;
 
-        public static final double armPos7 = .418;
-        public static final double flipperPos7 = .23;
+        public static final double armPos7 = 132;
+        public static final double flipperPos7 = 79.2;
     }
     public static final class Swerve {
         public static final int pigeonID = 30;

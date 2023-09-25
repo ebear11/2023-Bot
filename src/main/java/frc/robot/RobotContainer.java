@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
-import frc.robot.autos.Auto;
 import frc.robot.autos.crappyAuto;
-import frc.robot.autos.exampleAuto;
+import frc.robot.commands.Balance;
 import frc.robot.commands.MoveToSetpoint;
+import frc.robot.commands.SnapBack;
 //import frc.robot.autos.exampleAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmSubsystem;
@@ -39,10 +39,10 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final POVButton liftUp = new POVButton(operator, 0);
-    private final POVButton liftDown = new POVButton(operator, 180);
-    private final POVButton flipperUp = new POVButton(operator, 90);
-    private final POVButton flipperDown = new POVButton(operator, 270);
+    private final POVButton balance = new POVButton(driver, 0);
+    private final POVButton snapBack = new POVButton(driver, 180);
+    // private final POVButton flipperUp = new POVButton(operator, 90);
+    // private final POVButton flipperDown = new POVButton(operator, 270);
     private final JoystickButton clampToggle = new JoystickButton(operator, 1);
     private final JoystickButton extendToggle = new JoystickButton(operator, 2);
     private final JoystickButton position1 = new JoystickButton(operator, 7);
@@ -77,9 +77,9 @@ public class RobotContainer {
 //        armSubsystem.setDefaultCommand(idleDefault);
         // Configure the button bindings
         configureButtonBindings();
-        chooser.setDefaultOption("Simple Auto", new exampleAuto(s_Swerve, armSubsystem));
-        chooser.addOption("Platform Auto", new Auto(s_Swerve, armSubsystem));
-        SmartDashboard.putData(chooser);
+        //chooser.setDefaultOption("Simple Auto", new exampleAuto(s_Swerve, armSubsystem));
+        //chooser.addOption("Platform Auto", new Auto(s_Swerve, armSubsystem));
+        //SmartDashboard.putData(chooser);
 
     }
 
@@ -92,18 +92,20 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        liftUp
-            .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(.5)))
-            .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
-        liftDown
-            .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(-.5)))
-            .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
-        flipperUp
-            .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(.25)))
-            .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
-        flipperDown
-            .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(-.25)))
-            .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
+        // liftUp
+        //     .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(.5)))
+        //     .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
+        // liftDown
+        //     .onTrue(new InstantCommand(() -> armSubsystem.moveArmMan(-.5)))
+        //     .onFalse(new InstantCommand(() -> armSubsystem.moveArmMan(0)));
+        // flipperUp
+        //     .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(.25)))
+        //     .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
+        // flipperDown
+        //     .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(-.25)))
+        //     .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
+        balance.whileTrue(new Balance(s_Swerve));
+        snapBack.whileTrue(new SnapBack(s_Swerve));
         extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleExtender()));
         clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
         position1
