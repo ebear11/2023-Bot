@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -30,6 +31,14 @@ public class ArmSubsystem extends SubsystemBase{
         extender.set(Value.kForward);
         clamper.set(Value.kForward);
     }
+    
+    public double getArmDegrees() {
+        return encoder.getAbsolutePosition() * 360;
+    }
+    public double getFlipperDegrees() {
+        return encoderFlipper.getAbsolutePosition() * 360;
+    }
+
     public void moveArmMan(double input){
         armMotor.set(ControlMode.PercentOutput, -input);
         armMotor2.set(ControlMode.PercentOutput, input);
@@ -39,13 +48,8 @@ public class ArmSubsystem extends SubsystemBase{
         armController.setTolerance(Constants.armTol);
         armController.setSetpoint(setPoint);
         if (!armController.atSetpoint()){
-            double speed = armController.calculate(encoder.getAbsolutePosition(), setPoint);
-            if (speed > .25) {
-                speed = 0.25;
-            }
-            else if (speed < -.25){
-                speed = -0.25;            
-            }
+            double speed = armController.calculate(getArmDegrees(), setPoint);
+            speed = MathUtil.clamp(speed, -.42, .42);
             armMotor.set(ControlMode.PercentOutput, -speed);
             armMotor2.set(ControlMode.PercentOutput, speed);
         }
@@ -60,13 +64,8 @@ public class ArmSubsystem extends SubsystemBase{
     public void moveFlipper(double setPoint){
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
-        double speed = flipperController.calculate(encoderFlipper.getAbsolutePosition(), setPoint);
-        if (speed > .25){
-            speed = .25;
-        }
-        else if (speed < -.25){
-            speed = -.25;
-        }
+        double speed = flipperController.calculate(getFlipperDegrees(), setPoint);
+        speed = MathUtil.clamp(speed, -.4, .4);
         if (!flipperController.atSetpoint()) {
             flipperMotor.set(-speed);
         }
@@ -111,8 +110,8 @@ public class ArmSubsystem extends SubsystemBase{
     }
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm Encoder Value", encoder.getAbsolutePosition());
-        SmartDashboard.putNumber("Flipper Encoder Value", encoderFlipper.getAbsolutePosition());
+        SmartDashboard.putNumber("Arm Encoder Degrees", getArmDegrees());
+        SmartDashboard.putNumber("Flipper Encoder Degrees", getFlipperDegrees());
 
     }
 }
