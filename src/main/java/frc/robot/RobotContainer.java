@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.math.DriveCurve;
 import frc.robot.autos.crappyAuto;
+import frc.robot.commands.Balance;
 import frc.robot.commands.MoveToSetpoint;
 import frc.robot.commands.SnapBack;
 //import frc.robot.autos.exampleAuto;
@@ -38,8 +39,8 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    // private final POVButton liftUp = new POVButton(operator, 0);
-    private final POVButton snapBack = new POVButton(operator, 180);
+    private final POVButton balance = new POVButton(driver, 0);
+    private final POVButton snapBack = new POVButton(driver, 180);
     // private final POVButton flipperUp = new POVButton(operator, 90);
     // private final POVButton flipperDown = new POVButton(operator, 270);
     private final JoystickButton clampToggle = new JoystickButton(operator, 1);
@@ -103,7 +104,8 @@ public class RobotContainer {
         // flipperDown
         //     .onTrue(new InstantCommand(() -> armSubsystem.moveFlipperMan(-.25)))
         //     .onFalse(new InstantCommand(() -> armSubsystem.moveFlipperMan(0)));
-        //snapBack.onTrue(new SnapBack(s_Swerve));
+        balance.whileTrue(new Balance(s_Swerve));
+        snapBack.whileTrue(new SnapBack(s_Swerve));
         extendToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleExtender()));
         clampToggle.onTrue(new InstantCommand(() -> armSubsystem.toggleClamper()));
         position1

@@ -125,6 +125,7 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("X value" , xyz[0]);
         SmartDashboard.putNumber("Y value" , xyz[1]);
         SmartDashboard.putNumber("Z value" , xyz[2]);
+        SmartDashboard.putNumber("pitch" , gyro.getPitch());
 
 
     }

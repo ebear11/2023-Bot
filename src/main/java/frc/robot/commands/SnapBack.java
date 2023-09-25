@@ -25,16 +25,17 @@ public class SnapBack extends CommandBase {
     }
     @Override
     public void execute() {
-        rotVal = MathUtil.clamp(turnController.calculate(pigeon.getYaw(), 0),-.5,.5);
+        turnController.enableContinuousInput(0, 360);
+        rotVal = MathUtil.clamp(turnController.calculate(pigeon.getYaw(), 0),-5,5);
         swerve.drive(new Translation2d(0,0), rotVal, true, false);
     }
-    @Override
-    public boolean isFinished(){
-        if (pigeon.getYaw() > 1 && pigeon.getYaw() < -1){
-            return true;
-        }
-        return false;
-    }
+    // @Override
+    // public boolean isFinished(){
+    //     if (pigeon.getYaw() > 1 && pigeon.getYaw() < -1){
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     
 }

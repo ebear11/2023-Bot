@@ -49,7 +49,7 @@ public class ArmSubsystem extends SubsystemBase{
         armController.setSetpoint(setPoint);
         if (!armController.atSetpoint()){
             double speed = armController.calculate(getArmDegrees(), setPoint);
-            speed = MathUtil.clamp(speed, -.25, .25);
+            speed = MathUtil.clamp(speed, -.42, .42);
             armMotor.set(ControlMode.PercentOutput, -speed);
             armMotor2.set(ControlMode.PercentOutput, speed);
         }
@@ -65,7 +65,7 @@ public class ArmSubsystem extends SubsystemBase{
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
         double speed = flipperController.calculate(getFlipperDegrees(), setPoint);
-        speed = MathUtil.clamp(speed, -.25, .25);
+        speed = MathUtil.clamp(speed, -.4, .4);
         if (!flipperController.atSetpoint()) {
             flipperMotor.set(-speed);
         }
