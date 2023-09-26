@@ -12,11 +12,14 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase{
+    Spark blinkin = new Spark(0);
+    double blinkenSpeed = 0;
     TalonFX armMotor = new TalonFX(31);
     TalonFX armMotor2 = new TalonFX(33);
     CANSparkMax flipperMotor = new CANSparkMax(32, MotorType.kBrushless);
@@ -30,6 +33,7 @@ public class ArmSubsystem extends SubsystemBase{
     public ArmSubsystem() {
         extender.set(Value.kForward);
         clamper.set(Value.kForward);
+        setLedDefault();
     }
     
     public double getArmDegrees() {
@@ -107,6 +111,27 @@ public class ArmSubsystem extends SubsystemBase{
     }
     public void setStop(boolean value){
         stopArm = value;
+    }
+    public void setLedCone(){
+        if (blinkenSpeed == -.07){
+            setLedDefault();
+        }
+        else {
+            blinkenSpeed = -.07;
+            blinkin.set(blinkenSpeed);
+        }
+    }
+    public void setLedCube(){
+        if (blinkenSpeed == .15){
+            setLedDefault();
+        }
+        else {
+            blinkenSpeed = .15;
+            blinkin.set(blinkenSpeed);
+        }
+    }
+    public void setLedDefault(){
+        blinkin.set(-.85);
     }
     @Override
     public void periodic() {

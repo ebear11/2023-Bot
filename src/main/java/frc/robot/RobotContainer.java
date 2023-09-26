@@ -51,7 +51,8 @@ public class RobotContainer {
     private final JoystickButton position4 = new JoystickButton(operator, 12);
     private final JoystickButton position5 = new JoystickButton(operator, 11);
     private final JoystickButton position6 = new JoystickButton(operator, 9);
-   
+    private final JoystickButton setLedCone = new JoystickButton(operator, 3);
+    private final JoystickButton setLedCube = new JoystickButton(operator, 4);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -115,6 +116,9 @@ public class RobotContainer {
         position4.whileTrue(new MoveToSetpoint(armSubsystem, 4));
         position5.whileTrue(new MoveToSetpoint(armSubsystem, 5));
         position6.whileTrue(new MoveToSetpoint(armSubsystem, 6));
+        setLedCone.onTrue(new InstantCommand(() -> armSubsystem.setLedCone()));
+        setLedCube.onTrue(new InstantCommand(() -> armSubsystem.setLedCube()));
+        
     }
 
     /**

@@ -26,14 +26,14 @@ public final class Constants {
         public static final double armPos1 = 20.88;
         public static final double flipperPos1 = 222.3;
 
-        public static final double armPos2 = 57.7;
-        public static final double flipperPos2 = 98.08;
+        public static final double armPos2 = 60.7; // old 58
+        public static final double flipperPos2 = 88.08; // old 98
 
         public static final double armPos3 = 47;
         public static final double flipperPos3 = 150.68;
 
         public static final double armPos4 = 120.2;
-        public static final double flipperPos4 = 78.6;
+        public static final double flipperPos4 = 82.6;
 
         public static final double armPos5 = 131.8;
         public static final double flipperPos5 = 79.2;
