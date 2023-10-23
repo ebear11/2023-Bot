@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.music.Orchestra;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -69,7 +70,7 @@ public class ArmSubsystem extends SubsystemBase{
         flipperController.setTolerance(Constants.flipperTol);
         flipperController.setSetpoint(setPoint);
         double speed = flipperController.calculate(getFlipperDegrees(), setPoint);
-        speed = MathUtil.clamp(speed, -.4, .4);
+        speed = MathUtil.clamp(speed, -.35, .35);
         if (!flipperController.atSetpoint()) {
             flipperMotor.set(-speed);
         }
@@ -131,8 +132,10 @@ public class ArmSubsystem extends SubsystemBase{
         }
     }
     public void setLedDefault(){
-        blinkin.set(-.85);
+        blinkenSpeed = -.85;
+        blinkin.set(blinkenSpeed);
     }
+    
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Arm Encoder Degrees", getArmDegrees());

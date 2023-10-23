@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.music.Orchestra;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -93,6 +96,22 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    Orchestra orchestra = new Orchestra();
+    orchestra.addInstrument(new TalonFX(31));
+    orchestra.addInstrument(new TalonFX(33));
+    orchestra.addInstrument(new TalonFX(13));
+    orchestra.addInstrument(new TalonFX(2));
+    orchestra.addInstrument(new TalonFX(12));
+    orchestra.addInstrument(new TalonFX(1));
+    orchestra.addInstrument(new TalonFX(11));
+    orchestra.addInstrument(new TalonFX(10));
+    orchestra.addInstrument(new TalonFX(0));
+    orchestra.addInstrument(new TalonFX(3));
+
+
+
+      orchestra.loadMusic("song2.chrp");
+      orchestra.play();
   }
 
   /** This function is called periodically during test mode. */

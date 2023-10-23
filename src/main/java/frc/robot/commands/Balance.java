@@ -17,6 +17,7 @@ public class Balance extends CommandBase {
     Pigeon2 pigeon = new Pigeon2(Constants.Swerve.pigeonID);
     PIDController balanceController = new PIDController(Constants.balanceP, 0, 0);
     Timer timer = new Timer();
+    boolean stop = true;
     public Balance(Swerve swerve){
         this.balanceController.setTolerance(0.25);
         this.swerve = swerve;
@@ -26,27 +27,41 @@ public class Balance extends CommandBase {
     public void initialize(){
         timer.reset();
         timer.start();
+        stop = false;
     }
     @Override
     public void execute() {
         //translationVal = MathUtil.clamp(balanceController.calculate(pigeon.getPitch(), 0),-.1,.1);
         System.out.println("Running Balance");
         translationVal = 0;
-        if (pigeon.getPitch() < -0.5){
-            translationVal = .15;
+        double[] xyz = new double[3];
+        pigeon.getRawGyro(xyz);
+        // if (pigeon.getPitch() < -0.2){
+        //     translationVal = .11;
+        // }
+        if (pigeon.getPitch() > 0.1){
+            translationVal = -.11;
         }
-        else if (pigeon.getPitch() > 0.5){
-            translationVal = -.15;
+
+        if(xyz[0] > 11.5){
+            translationVal = 0;
+            stop = true;
+        }
+        else if(xyz[0] > 7.5){
+            translationVal = .09;
         }
         swerve.drive(new Translation2d(translationVal,0).times(Constants.Swerve.maxSpeed), 0, true, false);
     }
-    // @Override
-    // public boolean isFinished(){
-    //     if (pigeon.getPitch() > 10 && pigeon.getPitch() < -10){
-    //         return false;
-    //     }
-    //     return true;
-    // }
+    @Override
+    public boolean isFinished(){
+         return stop;
+     }
+    @Override
+    public void end(boolean interrupted){
+
+        swerve.drive(new Translation2d(0,0).times(Constants.Swerve.maxSpeed), 0, true, false);
+
+    }
 
     
 }

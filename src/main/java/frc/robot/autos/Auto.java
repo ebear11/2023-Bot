@@ -20,8 +20,8 @@ import frc.robot.subsystems.ArmSubsystem;
 
 public class Auto extends SequentialCommandGroup{
     public Auto(Swerve s_Swerve, ArmSubsystem armSubsystem){
-        SequentialCommandGroup dropCube = new SequentialCommandGroup(new MoveToSetpoint(armSubsystem, 1, true),new MoveToSetpoint(armSubsystem, 7, true));
-        dropCube.addCommands(new InstantCommand(() -> armSubsystem.extendExtender()), new WaitCommand(1),new InstantCommand(() -> armSubsystem.openClamper()), new InstantCommand(() -> armSubsystem.retractExtender()),new WaitCommand(.5), new MoveToSetpoint(armSubsystem, 1));
+        SequentialCommandGroup dropCube = new SequentialCommandGroup(new MoveToSetpoint(armSubsystem, 1, true),new MoveToSetpoint(armSubsystem, 5, true));
+        dropCube.addCommands(new WaitCommand(.1),new InstantCommand(() -> armSubsystem.extendExtender()), new WaitCommand(.5),new InstantCommand(() -> armSubsystem.openClamper()), new InstantCommand(() -> armSubsystem.retractExtender()),new WaitCommand(.5), new MoveToSetpoint(armSubsystem, 1, true));
        // Command autoDrive = new autoSwerve(s_Swerve);
         PathPlannerTrajectory Path = PathPlanner.loadPath("HardPath", new PathConstraints(4, 3));
 
@@ -39,7 +39,7 @@ public class Auto extends SequentialCommandGroup{
             s_Swerve // Requires this drive subsystem
         );
         Command balanceBot = new Balance(s_Swerve);
-        addCommands(dropCube, new InstantCommand(() -> s_Swerve.resetOdometry(Path.getInitialHolonomicPose())), autoController, balanceBot);
+        addCommands(dropCube, new InstantCommand(() -> s_Swerve.resetOdometry(Path.getInitialHolonomicPose())), autoController, new WaitCommand(.5),balanceBot);
     }
     
 }
